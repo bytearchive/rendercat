@@ -1,0 +1,33 @@
+#!/bin/bash -x
+export DISPLAY=0:0
+engine=$1
+shift
+result_file="${2}.${10}"
+if [ ! -f "/img/${result_file}" ]
+then
+	if [[ $engine == "phantom" ]]
+	then
+		COMMAND="/usr/local/bin/phantom_or_slimer /usr/local/bin/phantomjs"
+	elif [[ $engine == "slimer" ]]
+	then
+		COMMAND="/usr/local/bin/phantom_or_slimer /usr/local/bin/slimerjs"
+	elif [[ $engine == "cuty" ]]
+	then
+		COMMAND="/usr/local/bin/cuty dummy_param"
+	else
+		COMMAND="echo FAIL: didn't recognise $engine for "
+	fi
+    echo "$(date) before render"  >&2
+    result=$(timelimit -t180 -T10 $COMMAND $@  2>&1)
+    echo "$(date) after render"  >&2
+
+fi
+
+if [[ -f "/img/${result_file}" ]]
+then
+    rm -f "/var/easydeploy/share/tmp/hourly/${result_file}.log" &> /dev/null
+	echo "${result_file}"
+else
+	echo "FAIL: [$(date) ${IP}] Could not find /img/${result_file} for $1 : ${result} "
+    echo "FAIL: Could not find /img/${result_file} for $1 : ${result}" > "/var/easydeploy/share/tmp/hourly/${result_file}.log"
+fi

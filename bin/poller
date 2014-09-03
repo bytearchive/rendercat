@@ -1,0 +1,45 @@
+#!/bin/bash -x
+deploy_env=$(cat /var/easydeploy/share/.config/deploy_env)
+#export REDIS_CLI="/usr/bin/redis-cli -h pub-redis-16837.us-west-2-1.1.ec2.garantiadata.com -p 16837 -a ja9hyns6yurd9yac7jor6a --raw "
+export REDIS_CLI="/usr/bin/redis-cli -h redis-snapito-redis.j.layershift.co.uk -p 6379 -a OzB1PjavEb --raw "
+export DISPLAY=0:0
+export PREFIX="${deploy_env}:2.12"
+export EASYDEPLOY_HOST_IP=$(cat /var/easydeploy/share/.config/ip)
+#We have a loop here, to ensure we get regular clean and updated docker containers.
+#for count in $(seq 1 1000)
+while :
+do
+    /etc/init.d/xvfb start
+    sleep 10
+    while cutycapt --url=http://example.com --out=/var/easydeploy/share/test.png
+    do
+        for count in $(seq 1 100)
+        do
+            line=$(${REDIS_CLI} brpop ${PREFIX}:snapito_request_queue:linux 3600 | tail -1)
+            [[ $? == 0 ]] &&  touch /var/easydeploy/share/health_ping.txt
+            if [ ! -z "$line" ] && [ "$line" != "(nil)" ]
+            then
+                echo "$(date) before runner" >&2
+                export REQID="$(echo "$line"  | cut -d":" -f1 | tr -d '\n')"
+                export REQHASH="$(echo "$line" |  cut -d":" -f2 | tr -d '\n')"
+                ${REDIS_CLI} lpush "${PREFIX}:snapito_confirmed_snap:${REQID}:${REQHASH}" "${EASYDEPLOY_HOST_IP}" &
+                time runner "${EASYDEPLOY_HOST_IP}" "${REQID}" "${REQHASH}" "$line"
+                if [[ $? == 0 ]]
+                then
+                    touch /var/easydeploy/share/snapshot_taken_ping.txt
+                else
+                    ${REDIS_CLI} lpush ${PREFIX}:snapito_request_queue:linux "$line"
+                fi
+
+                echo "$(date) after runner" >&2
+            else
+                echo "Empty value or timeout, backing off just in case"
+                sleep $(( 30 + $count))
+            fi
+        done
+    done
+
+    /etc/init.d/xvfb stop
+done
+
+

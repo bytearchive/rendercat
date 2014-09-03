@@ -1,0 +1,32 @@
+#!/bin/bash -x
+export IP="$1"
+export REQID="$2"
+export REQHASH="$3"
+line="$4"
+length=$(echo "${REQID}:${REQHASH}:" | wc -m)
+command="$(echo $line | cut -c${length}-)"
+#${REDIS_CLI} setex "${PREFIX}:snapito_confirmed_snap:$reqid" 5 "$IP"
+echo "$(date) before command $command" >&2
+result="$(/usr/local/bin/render ${command} | tail -1)"
+echo "$(date) after command $command"  >&2
+echo RESULT: $(echo $command | cut -d' ' -f2) : $result
+[[ -z "${result}" ]] && result="FAIL: No response from renderer"
+echo "RESULT: $result"
+if echo "${result}" | grep "FAIL: "
+then
+        ${REDIS_CLI} setex "${PREFIX}:snapito_finished_snap:${REQHASH}" 3600 "$result"
+else
+        if (( $(curl -s -o /dev/null -I -w "%{http_code}" http://${IP}/temp_images/$result) < 400 ))
+        then
+            ${REDIS_CLI} setex "${PREFIX}:snapito_finished_snap:${REQHASH}" 300 "http://${IP}/temp_images/$result"
+        else
+            ${REDIS_CLI} setex "${PREFIX}:snapito_finished_snap:${REQHASH}" 2  "FAIL: Image no longer on server ${IP}"
+        fi
+fi
+${REDIS_CLI} lpush "${PREFIX}:complete:${REQID}:${REQHASH}" ${IP}
+
+#Clean up now
+killall xulrunner || :
+killall cutycapt  || :
+killall phantomjs || :
+
