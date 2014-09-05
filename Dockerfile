@@ -108,28 +108,38 @@ RUN apt-get install -y nginx
 # Remove the default Nginx configuration file
 RUN rm -v /etc/nginx/nginx.conf
 
-
 # Removed unnecessary packages
 RUN apt-get autoremove -y
 
 # Clear package repository cache
 RUN apt-get clean all
 
-
-
-# Copy a configuration file from the current directory
-ADD etc/nginx.conf /etc/nginx/
-
-# Append "daemon off;" to the beginning of the configuration
-RUN echo "daemon off;" >> /etc/nginx/nginx.conf
+# Node stuff
+RUN npm install forever -g
 
 
 WORKDIR /app
-ADD . /app
-RUN chmod 755 ./run.sh
+ADD package.json /app/
 RUN npm install
-RUN node gulpfile.js
-RUN npm install forever -g
+
+ADD public/ /app/public
+ADD routes/ /app/routes
+ADD views/ /app/views
+ADD bin/ /app/bin
+ADD app.js /app/
+ADD RenderCat.js /app/
+ADD rendercat_modules/ /app/rendercat_modules
+ADD run.sh /app/
+ADD gulpfile.js /app/
+
+ADD etc/nginx.conf /etc/nginx/
+# Append "daemon off;" to the beginning of the configuration
+RUN echo "daemon off;" >> /etc/nginx/nginx.conf
+
+RUN chmod 755 /app/run.sh
+
+RUN node /app/gulpfile.js
+
 EXPOSE 80
 #CMD forever --watchDirectory rendercat_modules app.js
-CMD ./run.sh
+CMD /app/run.sh

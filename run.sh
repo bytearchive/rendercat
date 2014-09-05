@@ -1,4 +1,7 @@
 export NODE_PATH=/app
 #Move to supervisord (both of these)
 /usr/sbin/nginx &
-node /app/app.js
+cd /app
+export NODE_PATH=/app
+ls /app
+node app.js
