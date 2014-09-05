@@ -124,11 +124,11 @@ RUN echo "daemon off;" >> /etc/nginx/nginx.conf
 
 
 WORKDIR /app
-ADD . /app/
-
+ADD . .
+RUN chmod 755 ./run.sh
 RUN npm install
 RUN node gulpfile.js
 RUN npm install forever -g
 EXPOSE 80
 #CMD forever --watchDirectory rendercat_modules app.js
-CMD node app.js
+CMD ./run.sh

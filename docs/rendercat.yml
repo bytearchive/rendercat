@@ -1,0 +1,16 @@
+application:
+  name: "My Application"
+  version: 1.0
+
+source:
+  gitpull: https://github.com/cazcade/myproject
+
+services:
+  s3:
+    key: fdsfdsfdsfsdf
+    secret: fdsfsdfsdfds
+
+add-ons:
+  mongodb:
+
+
