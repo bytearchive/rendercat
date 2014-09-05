@@ -19,6 +19,7 @@ RUN apt-get update
 # Required directories
 RUN mkdir -p /usr/local
 RUN mkdir /data
+RUN mkdir /app
 
 #Nasty Downloads
 RUN mkdir ~/fonts/
@@ -124,7 +125,7 @@ RUN echo "daemon off;" >> /etc/nginx/nginx.conf
 
 
 WORKDIR /app
-ADD . .
+ADD . /app
 RUN chmod 755 ./run.sh
 RUN npm install
 RUN node gulpfile.js
