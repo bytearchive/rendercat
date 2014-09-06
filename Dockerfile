@@ -85,5 +85,6 @@ RUN chmod 755 /app/run.sh
 RUN node /app/gulpfile.js
 
 EXPOSE 80
+EXPOSE 3000
 #CMD forever --watchDirectory rendercat_modules app.js
 CMD /app/run.sh
