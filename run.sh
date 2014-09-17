@@ -1,3 +1,5 @@
+#!/bin/bash -eux
+
 export NODE_PATH=/app
 #Move to supervisord (both of these)
 /usr/sbin/nginx &
