@@ -1,5 +1,5 @@
-FROM cazcade/rendercat-base
-MAINTAINER Neil Ellis neil@cazcade.com
+FROM neilellis/rendercat-base
+MAINTAINER Neil Ellis hello@neilellis.me
 
 # Set working directory.
 ENV HOME /root
