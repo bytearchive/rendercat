@@ -4,6 +4,8 @@
 var ph = require('phantom');
 import express= require('express');
 
+console.log("Rendercat");
+
 export class RenderCat {
     public req:express.Request= null;
     public res:express.Response= null;

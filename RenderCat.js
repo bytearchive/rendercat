@@ -2,6 +2,8 @@
 ///<reference path="./typings/express/express.d.ts"/>
 var ph = require('phantom');
 
+console.log("Rendercat");
+
 var RenderCat = (function () {
     function RenderCat(req, res) {
         this.req = null;

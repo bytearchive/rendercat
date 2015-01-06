@@ -56,6 +56,13 @@ app.use(function(err, req, res, next) {
     });
 });
 
-process.stdin.resume();//so the program will not close instantly
 
-module.exports = app;
+var server = app.listen(3000, function () {
+
+    var host = server.address().address;
+    var port = server.address().port;
+
+    console.log('Rendercat listening at http://%s:%s', host, port)
+
+});
+process.stdin.resume();//so the program will not close instantly
