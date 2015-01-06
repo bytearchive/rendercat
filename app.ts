@@ -65,4 +65,5 @@ var server = app.listen(3000, function () {
     console.log('Rendercat listening at http://%s:%s', host, port)
 
 });
+
 process.stdin.resume();//so the program will not close instantly
