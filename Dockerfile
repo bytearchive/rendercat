@@ -89,5 +89,5 @@ EXPOSE 3000
 #CMD forever --watchDirectory rendercat_modules app.js
 CMD /app/run.sh
 
-ONBUILD ADD modules/* /app/rendercat_modules/
-ONBUILD ADD www/* /app/public/
+ONBUILD ADD modules/ /app/rendercat_modules/
+ONBUILD ADD www/ /app/public/
