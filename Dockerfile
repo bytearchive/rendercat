@@ -72,7 +72,7 @@ ADD views/ /app/views
 ADD bin/ /app/bin
 ADD app.js /app/
 ADD RenderCat.js /app/
-ADD rendercat_modules/ /app/rendercat_modules
+ADD modules/ /app/modules
 ADD run.sh /app/
 ADD gulpfile.js /app/
 
@@ -86,8 +86,8 @@ RUN node /app/gulpfile.js
 
 EXPOSE 80
 EXPOSE 3000
-#CMD forever --watchDirectory rendercat_modules app.js
+#CMD forever --watchDirectory modules app.js
 CMD /app/run.sh
 
-ONBUILD ADD modules/ /app/rendercat_modules/
-ONBUILD ADD www/ /app/public/
+ONBUILD ADD modules/ /app/modules/
+ONBUILD ADD public/ /app/public/

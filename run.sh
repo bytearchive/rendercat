@@ -5,5 +5,5 @@ export NODE_PATH=/app
 /usr/sbin/nginx &
 cd /app
 export NODE_PATH=/app
-ls /app/rendercat_modules
+ls /app/modules
 node app.js

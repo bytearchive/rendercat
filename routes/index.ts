@@ -8,7 +8,7 @@ console.log("Routes")
 /* GET home page. */
 router.get('/api/0.1/:module/:fn', function(req, res) {
 //  res.render('index', { title: 'Express' });
-    require("root-require")("rendercat_modules/"+req.params.module)[req.params.fn](new rc.RenderCat(req,res))
+    require("root-require")("modules/"+req.params.module)[req.params.fn](new rc.RenderCat(req,res))
 });
 
 module.exports = router;
