@@ -7,8 +7,8 @@ WORKDIR /root
 
 # Env
 ENV SLIMERJS_VERSION_M 0.9
-ENV SLIMERJS_VERSION_F 0.9.0
-ENV PHANTOM_VERSION 1.9.7
+ENV SLIMERJS_VERSION_F 0.9.4
+#ENV PHANTOM_VERSION 1.9.7
 
 
 ## CasperJS
@@ -24,19 +24,7 @@ ENV PHANTOM_VERSION 1.9.7
 #RUN  rm /etc/parallel/config
 
 #Etc
-#ADD lib/render.js /usr/local/snapito/lib/
-
-#Flash
-RUN  apt-get install -y flashplugin-installer
-
-#CutyCapt
-RUN  apt-get install -y cutycapt
-
-
-#Git Related
-RUN curl https://raw.githubusercontent.com/progrium/gitreceive/master/gitreceive > /usr/local/bin/gitreceive
-RUN chmod 755 /usr/local/bin/gitreceive
-RUN /usr/local/bin/gitreceive init
+ADD lib/render.js /usr/local/lib/
 
 
 #Xvfbd
@@ -44,10 +32,6 @@ ADD bin/xvfb /etc/init.d/xvfb
 RUN chmod +x /etc/init.d/xvfb
 RUN update-rc.d xvfb defaults
 
-# Install Nginx
-
-# Download and Install Nginx
-RUN apt-get install -y nginx
 
 # Remove the default Nginx configuration file
 RUN rm -v /etc/nginx/nginx.conf
@@ -75,6 +59,19 @@ ADD RenderCat.js /app/
 ADD modules/ /app/modules
 ADD run.sh /app/
 ADD gulpfile.js /app/
+
+#Etc
+ADD lib/render.js /usr/local/lib/
+
+#Bin
+ADD bin/phantom_or_slimer.sh /usr/local/bin/phantom_or_slimer
+ADD bin/render_params.sh /usr/local/bin/render_params.sh
+ADD bin/cuty.sh /usr/local/bin/cuty
+ADD bin/poller /usr/local/bin/poller
+ADD bin/runner /usr/local/bin/runner
+ADD bin/render /usr/local/bin/render
+ADD bin/convert.sh /usr/local/bin/convert.sh
+RUN chmod 755 /usr/local/bin/*
 
 ADD etc/nginx.conf /etc/nginx/
 # Append "daemon off;" to the beginning of the configuration

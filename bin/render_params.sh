@@ -2,7 +2,7 @@
 export COMMAND="$1"
 shift 
 export URL="$(python -c "import urllib, sys; print urllib.unquote(sys.argv[1])" $1)"
-export FILE="/img/$2"
+export FILE="$2"
 export KEY="$3"
 export DELAY="$4"
 export LANG="$5"
