@@ -10,10 +10,17 @@ console.log("Rendercat");
 
 export class RenderRequest {
 
-    constructor(url:string, delay:number) {
+    constructor(url:string, delay:number,lang:string,width:number,height:number,viewPortWidth:number, viewPortHeight:number,fileType:string,device:string) {
         this.url = url;
         this.file = "/app/public/_rendered/" + url.replace(/\W/g, '_') + ".png";
         this.delay = delay;
+        this.lang=lang;
+        this.width=width;
+        this.height= height;
+        this.viewportWidth= viewPortWidth;
+        this.viewportHeight= viewPortHeight;
+        this.fileType= fileType;
+        this.device=device;
     }
 
     public engine:string = "phantom";
@@ -33,6 +40,7 @@ export class RenderRequest {
     public cropy:number = 0;
     public cropw:number = 1280;
     public croph:number = 1024;
+    public device:string="desktop";
 
     commandLine():any[] {
         return [this.engine, this.url, this.file, this.key, this.delay, this.lang, this.width,this.height, this.viewportWidth, this.viewportHeight, this.fileType, this.filter, this.unsharp, this.cropx, this.cropy, this.cropw, this.croph]
@@ -77,8 +85,8 @@ export class RenderCat {
     }
 
 
-    renderUsing(url:string,delay:number,callback:(string)=>void) {
-        this.render(new RenderRequest(url,delay),callback);
+    renderUsing(url:string, delay:number,lang:string,width:number,height:number,viewPortWidth:number, viewPortHeight:number,fileType:string,device:string,callback:(string)=>void) {
+        this.render(new RenderRequest(url,delay,lang,width,height,viewPortWidth,viewPortHeight,fileType,device),callback);
     }
 
     render(renderReq:RenderRequest, callback:(string)=>void) {

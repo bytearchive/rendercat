@@ -7,7 +7,7 @@ var spawn = childProcess.spawn;
 console.log("Rendercat");
 
 var RenderRequest = (function () {
-    function RenderRequest(url, delay) {
+    function RenderRequest(url, delay, lang, width, height, viewPortWidth, viewPortHeight, fileType, device) {
         this.engine = "phantom";
         this.url = null;
         this.key = "free";
@@ -24,9 +24,17 @@ var RenderRequest = (function () {
         this.cropy = 0;
         this.cropw = 1280;
         this.croph = 1024;
+        this.device = "desktop";
         this.url = url;
         this.file = "/app/public/_rendered/" + url.replace(/\W/g, '_') + ".png";
         this.delay = delay;
+        this.lang = lang;
+        this.width = width;
+        this.height = height;
+        this.viewportWidth = viewPortWidth;
+        this.viewportHeight = viewPortHeight;
+        this.fileType = fileType;
+        this.device = device;
     }
     RenderRequest.prototype.commandLine = function () {
         return [this.engine, this.url, this.file, this.key, this.delay, this.lang, this.width, this.height, this.viewportWidth, this.viewportHeight, this.fileType, this.filter, this.unsharp, this.cropx, this.cropy, this.cropw, this.croph];
@@ -50,8 +58,8 @@ var RenderCat = (function () {
         ph.create(fn);
     };
 
-    RenderCat.prototype.renderUsing = function (url, delay, callback) {
-        this.render(new RenderRequest(url, delay), callback);
+    RenderCat.prototype.renderUsing = function (url, delay, lang, width, height, viewPortWidth, viewPortHeight, fileType, device, callback) {
+        this.render(new RenderRequest(url, delay, lang, width, height, viewPortWidth, viewPortHeight, fileType, device), callback);
     };
 
     RenderCat.prototype.render = function (renderReq, callback) {

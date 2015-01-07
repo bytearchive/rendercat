@@ -24,6 +24,7 @@
     "express-winston": "~0.2.6",
     "ratelimiter": "~1.0.3",
     "express-limiter": "~1.3.0",
+    "iz": "~0.5.1",
     "packpath": "~0.1.0",
     "phantom": "~0.7.1"
   },
