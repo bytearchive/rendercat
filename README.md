@@ -14,6 +14,17 @@ Rendercat makes available the functions in the modules using the following URL f
   /api/<api-version>/<module>/<function>
 ```
 
+
+The function should be 
+
+
+```Typescript
+ rc.renderUsing(url, delay, lang, size.split("x")[0], size.split("x")[1], screen.split("x")[0], screen.split("x")[1], type, device, function (result) {
+                           rc.res.redirect(result.replace("/app/public/", "/"));
+                           rc.res.end();
+                       });
+```
+
 The current api version is 0.1. 
 
 The recommended manner for adding NodeJS modules is by adding `npm install x.y.z` instructions in the Dockerfile.
