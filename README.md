@@ -44,7 +44,7 @@ and a function for running JavaScript within PhantomJS
 ```
 
 
-To understand how to use `ph.createPage` please read the (documentation)[https://github.com/sgentle/phantomjs-node] for the phantomjs-node project.
+To understand how to use `ph.createPage` please read the [documentation](https://github.com/sgentle/phantomjs-node) for the phantomjs-node project.
 The current api version is 0.1. 
 
 The recommended manner for adding NodeJS modules is by adding `npm install x.y.z` instructions in the Dockerfile.
