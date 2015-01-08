@@ -30,7 +30,7 @@ export class RenderRequest {
     }
 
     public hash:string = null;
-    public engine:string = "phantom";
+    public engine:string = "slimer";
     public url:string = null;
     public file:string;
     public key:string = "free";

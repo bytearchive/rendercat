@@ -12,7 +12,7 @@ var RenderRequest = (function () {
     function RenderRequest(url, delay, lang, width, height, viewPortWidth, viewPortHeight, fileType, device, cache) {
         if (typeof cache === "undefined") { cache = 1; }
         this.hash = null;
-        this.engine = "phantom";
+        this.engine = "slimer";
         this.url = null;
         this.key = "free";
         this.delay = 0;

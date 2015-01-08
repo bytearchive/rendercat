@@ -3,6 +3,7 @@
 . $(dirname $0)/render_params.sh
 export DISPLAY=0:0
 #if timelimit -t300 -T60 ${COMMAND} --proxy-type=http --proxy=${IP}:3128 --disk-cache=yes --max-disk-cache-size=50000000 /usr/local/lib/render.js "$URL" "${FILE}_tmp.png" "$KEY" "$DELAY" "$LANG" "$WIDTH" "$HEIGHT" "$VP_WIDTH" "$VP_HEIGHT"
+${COMMAND} -v
 if timelimit -t180 -T10 ${COMMAND} --disk-cache=yes --max-disk-cache-size=50000000 /usr/local/lib/render.js "$URL" "${FILE}_tmp.png" "$KEY" "$DELAY" "$LANG" "$WIDTH" "$HEIGHT" "$VP_WIDTH" "$VP_HEIGHT"
 then
     if [ -f "${FILE}_tmp.png" ]

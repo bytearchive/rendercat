@@ -11,7 +11,7 @@ ENV SLIMERJS_VERSION_F 0.9.4
 #ENV PHANTOM_VERSION 1.9.7
 
 
-RUN apt-get install -y supervisor
+RUN apt-get install -y supervisor firefox
 RUN mkdir -p /app/public/_rendered/
 
 ## CasperJS
@@ -30,10 +30,10 @@ RUN mkdir -p /app/public/_rendered/
 ADD lib/render.js /usr/local/lib/
 
 
-#Xvfbd
-ADD bin/xvfb /etc/init.d/xvfb
-RUN chmod +x /etc/init.d/xvfb
-RUN update-rc.d xvfb defaults
+##Xvfbd
+#ADD bin/xvfb /etc/init.d/xvfb
+#RUN chmod +x /etc/init.d/xvfb
+#RUN update-rc.d xvfb defaults
 
 
 # Remove the default Nginx configuration file

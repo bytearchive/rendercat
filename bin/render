@@ -1,5 +1,5 @@
 #!/bin/bash -x
-export DISPLAY=0:0
+export DISPLAY=:0
 engine=$1
 shift
 result_file="${2}.${10}"
