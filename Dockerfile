@@ -11,6 +11,7 @@ ENV SLIMERJS_VERSION_F 0.9.4
 #ENV PHANTOM_VERSION 1.9.7
 
 
+RUN apt-get install -y supervisor
 RUN mkdir -p /app/public/_rendered/
 
 ## CasperJS
@@ -44,9 +45,6 @@ RUN apt-get autoremove -y
 # Clear package repository cache
 RUN apt-get clean all
 
-# Node stuff
-RUN npm install forever -g
-
 
 WORKDIR /app
 ADD package.json /app/
@@ -73,6 +71,8 @@ ADD bin/poller /usr/local/bin/poller
 ADD bin/runner /usr/local/bin/runner
 ADD bin/render /usr/local/bin/render
 ADD bin/convert.sh /usr/local/bin/convert.sh
+ADD bin/cleanup.sh /usr/local/bin/cleanup.sh
+COPY etc/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 RUN chmod 755 /usr/local/bin/*
 
 ADD etc/nginx.conf /etc/nginx/
@@ -85,8 +85,7 @@ RUN node /app/gulpfile.js
 
 EXPOSE 80
 EXPOSE 3000
-#CMD forever --watchDirectory modules app.js
-CMD /app/run.sh
+CMD ["/usr/bin/supervisord"]
 
 ONBUILD ADD modules/ /app/modules/
 ONBUILD ADD public/ /app/public/
