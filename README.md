@@ -50,4 +50,6 @@ To understand how to use `ph.createPage` please read the [documentation](https:/
 
 The recommended manner for adding NodeJS modules is by adding `npm install x.y.z` instructions in the Dockerfile.
 
+[![Dependency Status](https://www.versioneye.com/user/projects/54ae283134ff3ed1c900002a/badge.svg?style=flat)](https://www.versioneye.com/user/projects/54ae283134ff3ed1c900002a)
+
 Released under ASL 2.0 (c) 2014-2015 Neil Ellis
