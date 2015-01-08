@@ -4,10 +4,13 @@ var ph = require('phantom');
 var childProcess = require('child_process');
 var spawn = childProcess.spawn;
 
+var crypto = require('crypto');
+
 console.log("Rendercat");
 
 var RenderRequest = (function () {
     function RenderRequest(url, delay, lang, width, height, viewPortWidth, viewPortHeight, fileType, device) {
+        this.hash = null;
         this.engine = "phantom";
         this.url = null;
         this.key = "free";
@@ -26,7 +29,6 @@ var RenderRequest = (function () {
         this.croph = 1024;
         this.device = "desktop";
         this.url = url;
-        this.file = "/app/public/_rendered/" + url.replace(/\W/g, '_') + ".png";
         this.delay = delay;
         this.lang = lang;
         this.width = width;
@@ -35,13 +37,17 @@ var RenderRequest = (function () {
         this.viewportHeight = viewPortHeight;
         this.fileType = fileType;
         this.device = device;
+        var shasum = crypto.createHash('sha1');
+        shasum.update(this.engine + " '" + encodeURI(this.url) + "' '" + this.key + "' " + this.delay + " " + this.lang + " " + this.width + " " + this.height + " " + this.viewportWidth + " " + this.viewportHeight + " " + this.fileType + " " + this.filter + " " + this.unsharp + " " + this.cropx + " " + this.cropy + " " + this.cropw + " " + this.croph);
+        this.hash = shasum.digest('hex');
+        this.file = "/app/public/_rendered/" + url.replace(/\W/g, '_') + "_" + this.hash;
     }
     RenderRequest.prototype.commandLine = function () {
         return [this.engine, this.url, this.file, this.key, this.delay, this.lang, this.width, this.height, this.viewportWidth, this.viewportHeight, this.fileType, this.filter, this.unsharp, this.cropx, this.cropy, this.cropw, this.croph];
     };
 
     RenderRequest.prototype.shellArg = function () {
-        return this.engine + " '" + this.url + "' " + this.file + " '" + this.key + "' " + this.delay + " " + this.lang + " " + this.width + " " + this.height + " " + this.viewportWidth + " " + this.viewportHeight + " " + this.fileType + " " + this.filter + " " + this.unsharp + " " + this.cropx + " " + this.cropy + " " + this.cropw + " " + this.croph;
+        return this.engine + " '" + encodeURI(this.url) + "' " + this.file + " '" + this.key + "' " + this.delay + " " + this.lang + " " + this.width + " " + this.height + " " + this.viewportWidth + " " + this.viewportHeight + " " + this.fileType + " " + this.filter + " " + this.unsharp + " " + this.cropx + " " + this.cropy + " " + this.cropw + " " + this.croph;
     };
     return RenderRequest;
 })();

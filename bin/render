@@ -25,9 +25,9 @@ fi
 
 if [[ -f "/${result_file}" ]]
 then
-    rm -f "/var/easydeploy/share/tmp/hourly/${result_file}.log" &> /dev/null
+    rm -f "/var/log/snapshot-${result_file}.log" &> /dev/null
 	echo "${result_file}"
 else
-	echo "FAIL: [$(date) ${IP}] Could not find ${result_file} for $1 : ${result} "
-    echo "FAIL: Could not find ${result_file} for $1 : ${result}" > "/var/easydeploy/share/tmp/hourly/${result_file}.log"
+	echo "FAIL: [$(date)] Could not find ${result_file} for $1 : ${result} "
+    echo "FAIL: Could not find ${result_file} for $1 : ${result}" > "/var/log/snapshot-${result_file}.log"
 fi

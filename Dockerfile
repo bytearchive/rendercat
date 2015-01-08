@@ -11,6 +11,8 @@ ENV SLIMERJS_VERSION_F 0.9.4
 #ENV PHANTOM_VERSION 1.9.7
 
 
+RUN mkdir -p /app/public/_rendered/
+
 ## CasperJS
 # RUN git clone https://github.com/n1k0/casperjs.git /usr/local/casperjs
 # RUN echo '#!/bin/bash\n/usr/local/casperjs/bin/casperjs --engine=slimerjs $*' > /usr/local/casperjs/casperjs.sh

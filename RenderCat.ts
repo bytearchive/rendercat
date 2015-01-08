@@ -5,27 +5,33 @@ var ph = require('phantom');
 import childProcess = require('child_process');
 var spawn = childProcess.spawn;
 import express= require('express');
+var crypto = require('crypto');
 
 console.log("Rendercat");
 
 export class RenderRequest {
 
-    constructor(url:string, delay:number,lang:string,width:number,height:number,viewPortWidth:number, viewPortHeight:number,fileType:string,device:string) {
+    constructor(url:string, delay:number, lang:string, width:number, height:number, viewPortWidth:number,
+                viewPortHeight:number, fileType:string, device:string) {
         this.url = url;
-        this.file = "/app/public/_rendered/" + url.replace(/\W/g, '_') + ".png";
         this.delay = delay;
-        this.lang=lang;
-        this.width=width;
-        this.height= height;
-        this.viewportWidth= viewPortWidth;
-        this.viewportHeight= viewPortHeight;
-        this.fileType= fileType;
-        this.device=device;
+        this.lang = lang;
+        this.width = width;
+        this.height = height;
+        this.viewportWidth = viewPortWidth;
+        this.viewportHeight = viewPortHeight;
+        this.fileType = fileType;
+        this.device = device;
+        var shasum = crypto.createHash('sha1');
+        shasum.update(this.engine + " '" + encodeURI(this.url) + "' '" + this.key + "' " + this.delay + " " + this.lang + " " + this.width + " " + this.height + " " + this.viewportWidth + " " + this.viewportHeight + " " + this.fileType + " " + this.filter + " " + this.unsharp + " " + this.cropx + " " + this.cropy + " " + this.cropw + " " + this.croph);
+        this.hash = shasum.digest('hex');
+        this.file = "/app/public/_rendered/" + url.replace(/\W/g, '_') + "_" + this.hash;
     }
 
+    public hash:string = null;
     public engine:string = "phantom";
     public url:string = null;
-    public file:string; //address.replace(/\W/g, '_') + ".png"
+    public file:string;
     public key:string = "free";
     public delay:number = 0;
     public lang:string = "en_GB";
@@ -40,34 +46,15 @@ export class RenderRequest {
     public cropy:number = 0;
     public cropw:number = 1280;
     public croph:number = 1024;
-    public device:string="desktop";
+    public device:string = "desktop";
 
     commandLine():any[] {
-        return [this.engine, this.url, this.file, this.key, this.delay, this.lang, this.width,this.height, this.viewportWidth, this.viewportHeight, this.fileType, this.filter, this.unsharp, this.cropx, this.cropy, this.cropw, this.croph]
+        return [this.engine, this.url, this.file, this.key, this.delay, this.lang, this.width, this.height, this.viewportWidth, this.viewportHeight, this.fileType, this.filter, this.unsharp, this.cropx, this.cropy, this.cropw, this.croph]
     }
 
     shellArg():string {
-        return this.engine + " '" + this.url + "' " + this.file + " '" + this.key + "' " + this.delay + " " + this.lang + " " + this.width +" " + this.height + " " + this.viewportWidth + " " + this.viewportHeight + " " + this.fileType + " " + this.filter + " " + this.unsharp + " " + this.cropx + " " + this.cropy + " " + this.cropw + " " + this.croph;
+        return this.engine + " '" + encodeURI(this.url) + "' " + this.file + " '" + this.key + "' " + this.delay + " " + this.lang + " " + this.width + " " + this.height + " " + this.viewportWidth + " " + this.viewportHeight + " " + this.fileType + " " + this.filter + " " + this.unsharp + " " + this.cropx + " " + this.cropy + " " + this.cropw + " " + this.croph;
     }
-
-    /**
-     * export URL="$(python -c "import urllib, sys; print urllib.unquote(sys.argv[1])" $1)"
-     export FILE="/img/$2"
-     export KEY="$3"
-     export DELAY="$4"
-     export LANG="$5"
-     export WIDTH="$6"
-     export HEIGHT="$7"
-     export VP_WIDTH="$8"
-     export VP_HEIGHT="$9"
-     export FILE_TYPE="${10}"
-     export FILTER="${11}"
-     export UNSHARP="${12}"
-     export CROPX="${13}"
-     export CROPY="${14}"
-     export CROPW="${15}"
-     export CROPH="${16}"
-     */
 
 }
 
@@ -84,20 +71,27 @@ export class RenderCat {
         ph.create(fn);
     }
 
-
-    renderUsing(url:string, delay:number,lang:string,width:number,height:number,viewPortWidth:number, viewPortHeight:number,fileType:string,device:string,callback:(string)=>void) {
-        this.render(new RenderRequest(url,delay,lang,width,height,viewPortWidth,viewPortHeight,fileType,device),callback);
+    renderUsing(url:string, delay:number, lang:string, width:number, height:number, viewPortWidth:number,
+                viewPortHeight:number, fileType:string, device:string, callback:(string)=>void) {
+        this.render(new RenderRequest(url, delay, lang, width, height, viewPortWidth, viewPortHeight, fileType, device),
+                    callback);
     }
 
     render(renderReq:RenderRequest, callback:(string)=>void) {
         try {
-            var child:childProcess.ChildProcess = spawn('/bin/bash', ["-c", "/usr/local/bin/render "+renderReq.shellArg()]);
-        } catch(e) {
+            var child:childProcess.ChildProcess = spawn('/bin/bash',
+                                                        ["-c", "/usr/local/bin/render " + renderReq.shellArg()]);
+        } catch (e) {
             console.log(e);
         }
-        var resp:string ="";
-        child.stdout.on('data', function (buffer) { resp += buffer.toString() });
-        child.stdout.on('end', function() { console.log(resp);callback(resp); });
+        var resp:string = "";
+        child.stdout.on('data', function (buffer) {
+            resp += buffer.toString()
+        });
+        child.stdout.on('end', function () {
+            console.log(resp);
+            callback(resp);
+        });
 
     }
 
