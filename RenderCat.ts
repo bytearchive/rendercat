@@ -41,7 +41,7 @@ export class RenderRequest {
     public viewportWidth:number = 1280;
     public viewportHeight:number = 1024;
     public fileType:string = "png";
-    public filter:string = "box";
+    public filter:string = "lanczos";
     public unsharp:number = 0;
     public cropx:number = 0;
     public cropy:number = 0;
