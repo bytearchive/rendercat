@@ -1,4 +1,4 @@
-A DIY rendering engine for all your rendering needs based on NodeJS, Express, Phatom-Node, PhantomJS and SlimerJS.
+A DIY rendering engine for all your rendering needs based on NodeJS, Express, PhantomJS and SlimerJS amongst other tools.
 
 For a fully functioning example please visit the project http://github.com/neilellis/rendercat-snapshot or use the demo online at http://rendercat-snapshot-1.neilellis.cont.tutum.io/
 
