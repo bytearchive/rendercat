@@ -1,6 +1,6 @@
 A DIY rendering engine for all your rendering needs. 
 
-```Docker
+```Dockerfile
 FROM neilellis/rendercat
 ```
 
