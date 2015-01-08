@@ -15,16 +15,36 @@ Rendercat makes available the functions in the modules using the following URL f
 ```
 
 
-The function should be 
+The function should take only a single argument, the Rendercat object which supplies a function for rendering URLs:
 
-
-```Typescript
- rc.renderUsing(url, delay, lang, size.split("x")[0], size.split("x")[1], screen.split("x")[0], screen.split("x")[1], type, device, function (result) {
+```JavaScript
+function render(rc) {
+  var req= rc.req;
+  var res= rc.res;
+  
+  ...
+  
+  rc.renderUsing(url, delay, lang, width, height, viewportWidth, viewportHeight, imageType, deviceType, function (result) {
                            rc.res.redirect(result.replace("/app/public/", "/"));
                            rc.res.end();
                        });
+}
 ```
 
+and a function for running JavaScript within PhantomJS
+
+```JavaScript
+ rc.inBrowser(function (ph) {
+        ph.createPage(function (page) {
+            page.open(address, function (status) {
+              ...
+            });
+        });
+  });
+```
+
+
+To understand how to use `ph.createPage` please read the (documentation)[https://github.com/sgentle/phantomjs-node] for the phantomjs-node project.
 The current api version is 0.1. 
 
 The recommended manner for adding NodeJS modules is by adding `npm install x.y.z` instructions in the Dockerfile.
