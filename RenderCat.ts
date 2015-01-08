@@ -18,6 +18,8 @@ export class RenderRequest {
         this.height = height;
         this.viewportWidth = viewPortWidth;
         this.viewportHeight = viewPortHeight;
+        this.cropw = width;
+        this.croph = height;
         this.fileType = fileType;
         this.device = device;
         var shasum = crypto.createHash('sha1');
