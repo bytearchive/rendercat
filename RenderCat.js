@@ -9,7 +9,8 @@ var crypto = require('crypto');
 console.log("Rendercat");
 
 var RenderRequest = (function () {
-    function RenderRequest(url, delay, lang, width, height, viewPortWidth, viewPortHeight, fileType, device) {
+    function RenderRequest(url, delay, lang, width, height, viewPortWidth, viewPortHeight, fileType, device, cache) {
+        if (typeof cache === "undefined") { cache = 1; }
         this.hash = null;
         this.engine = "phantom";
         this.url = null;
@@ -28,6 +29,7 @@ var RenderRequest = (function () {
         this.cropw = 1280;
         this.croph = 1024;
         this.device = "desktop";
+        this.cacheTime = 1;
         this.url = url;
         this.delay = delay;
         this.lang = lang;
@@ -38,7 +40,8 @@ var RenderRequest = (function () {
         this.fileType = fileType;
         this.device = device;
         var shasum = crypto.createHash('sha1');
-        shasum.update(this.engine + " '" + encodeURI(this.url) + "' '" + this.key + "' " + this.delay + " " + this.lang + " " + this.width + " " + this.height + " " + this.viewportWidth + " " + this.viewportHeight + " " + this.fileType + " " + this.filter + " " + this.unsharp + " " + this.cropx + " " + this.cropy + " " + this.cropw + " " + this.croph);
+        this.cacheTime = Math.floor(new Date().getTime() / cache);
+        shasum.update(this.engine + " '" + encodeURI(this.url) + "' '" + this.key + "' " + this.delay + " " + this.lang + " " + this.width + " " + this.height + " " + this.viewportWidth + " " + this.viewportHeight + " " + this.fileType + " " + this.filter + " " + this.unsharp + " " + this.cropx + " " + this.cropy + " " + this.cropw + " " + this.croph + " " + this.cacheTime);
         this.hash = shasum.digest('hex');
         this.file = "/app/public/_rendered/" + url.replace(/\W/g, '_') + "_" + this.hash;
     }

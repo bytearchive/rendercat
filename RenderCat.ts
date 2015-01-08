@@ -12,7 +12,7 @@ console.log("Rendercat");
 export class RenderRequest {
 
     constructor(url:string, delay:number, lang:string, width:number, height:number, viewPortWidth:number,
-                viewPortHeight:number, fileType:string, device:string) {
+                viewPortHeight:number, fileType:string, device:string, cache:number=1) {
         this.url = url;
         this.delay = delay;
         this.lang = lang;
@@ -23,7 +23,8 @@ export class RenderRequest {
         this.fileType = fileType;
         this.device = device;
         var shasum = crypto.createHash('sha1');
-        shasum.update(this.engine + " '" + encodeURI(this.url) + "' '" + this.key + "' " + this.delay + " " + this.lang + " " + this.width + " " + this.height + " " + this.viewportWidth + " " + this.viewportHeight + " " + this.fileType + " " + this.filter + " " + this.unsharp + " " + this.cropx + " " + this.cropy + " " + this.cropw + " " + this.croph);
+        this.cacheTime = Math.floor(new Date().getTime() / cache);
+        shasum.update(this.engine + " '" + encodeURI(this.url) + "' '" + this.key + "' " + this.delay + " " + this.lang + " " + this.width + " " + this.height + " " + this.viewportWidth + " " + this.viewportHeight + " " + this.fileType + " " + this.filter + " " + this.unsharp + " " + this.cropx + " " + this.cropy + " " + this.cropw + " " + this.croph+" "+ this.cacheTime);
         this.hash = shasum.digest('hex');
         this.file = "/app/public/_rendered/" + url.replace(/\W/g, '_') + "_" + this.hash;
     }
@@ -47,6 +48,7 @@ export class RenderRequest {
     public cropw:number = 1280;
     public croph:number = 1024;
     public device:string = "desktop";
+    public cacheTime:number=1;
 
     commandLine():any[] {
         return [this.engine, this.url, this.file, this.key, this.delay, this.lang, this.width, this.height, this.viewportWidth, this.viewportHeight, this.fileType, this.filter, this.unsharp, this.cropx, this.cropy, this.cropw, this.croph]
