@@ -6,8 +6,6 @@ var spawn = childProcess.spawn;
 
 var crypto = require('crypto');
 
-console.log("Rendercat");
-
 var RenderRequest = (function () {
     function RenderRequest(url, delay, lang, width, height, viewPortWidth, viewPortHeight, fileType, device, cache) {
         if (typeof cache === "undefined") { cache = 1; }

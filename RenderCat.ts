@@ -7,8 +7,6 @@ var spawn = childProcess.spawn;
 import express= require('express');
 var crypto = require('crypto');
 
-console.log("Rendercat");
-
 export class RenderRequest {
 
     constructor(url:string, delay:number, lang:string, width:number, height:number, viewPortWidth:number,
