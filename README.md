@@ -1,4 +1,8 @@
-A DIY rendering engine for all your rendering needs. Watch this space ...
+A DIY rendering engine for all your rendering needs. 
+
+```Docker
+FROM neilellis/rendercat
+```
 
 Hint: look at routes/index.ts and the modules directory ... it's pretty simple really.
 
