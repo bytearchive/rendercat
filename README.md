@@ -1,6 +1,6 @@
 A DIY rendering engine for all your rendering needs based on NodeJS, Express, PhantomJS and SlimerJS amongst other tools.
 
-For a fully functioning example please visit the project http://github.com/neilellis/rendercat-snapshot or use the demo online at http://rendercat-snapshot-1.neilellis.cont.tutum.io/
+For a fully functioning example please visit the project http://github.com/neilellis/rendercat-example or http://github.com/neilellis/rendercat-snapshot or use the demos online at http://rendercat-example-1.neilellis.cont.tutum.io/ or http://rendercat-snapshot-1.neilellis.cont.tutum.io/
 
 To use rendercat create a new project with a Dockerfile like this:
 
