@@ -50,6 +50,8 @@ WORKDIR /app
 ADD package.json /app/
 RUN npm install
 
+COPY fonts.conf $HOME/.fonts.conf
+
 ADD public/ /app/public
 ADD routes/ /app/routes
 ADD views/ /app/views
