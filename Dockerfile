@@ -87,5 +87,6 @@ EXPOSE 80
 EXPOSE 3000
 CMD ["/usr/bin/supervisord"]
 
+
 ONBUILD COPY modules/ /app/modules/
 ONBUILD COPY public/ /app/public/

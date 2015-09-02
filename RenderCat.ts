@@ -4,6 +4,7 @@
 var ph = require('phantom');
 import childProcess = require('child_process');
 var spawn = childProcess.spawn;
+var execFile = childProcess.execFile;
 import express= require('express');
 var crypto = require('crypto');
 
@@ -81,18 +82,32 @@ export class RenderCat {
 
     render(renderReq:RenderRequest, callback:(string)=>void) {
         try {
-            var child:childProcess.ChildProcess = spawn('/bin/bash',
-                                                        ["-c", "/usr/local/bin/render " + renderReq.shellArg()]);
+            console.log("Child process pre-spawn");
+            var child:childProcess.ChildProcess = execFile("/usr/local/bin/render", renderReq.commandLine(), {
+                detached: true,
+                maxBuffer: 1024 * 500,
+                stdio: ['ignore', 1, 2],
+            }, function (error, buf1, buf2) {
+                console.log("Callback " + error)
+            });
+            console.log("Child process post-spawn " + child)
         } catch (e) {
             console.log(e);
         }
         var resp:string = "";
         child.stdout.on('data', function (buffer) {
+            console.log("data");
             resp += buffer.toString()
         });
         child.stdout.on('end', function () {
+            console.log("end");
             console.log(resp);
             callback(resp);
+        });
+        child.stderr.on('data', function (buffer) {
+            console.log(buffer);
+        });
+        child.stderr.on('end', function () {
         });
 
     }

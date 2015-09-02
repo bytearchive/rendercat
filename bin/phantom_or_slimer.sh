@@ -1,4 +1,4 @@
-#!/bin/bash -x
+#!/bin/bash
 
 . $(dirname $0)/render_params.sh
 export DISPLAY=0:0
