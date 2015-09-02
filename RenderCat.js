@@ -3,12 +3,12 @@
 var ph = require('phantom');
 var childProcess = require('child_process');
 var spawn = childProcess.spawn;
-
 var crypto = require('crypto');
-
 var RenderRequest = (function () {
     function RenderRequest(url, delay, lang, width, height, viewPortWidth, viewPortHeight, fileType, device, cache) {
-        if (typeof cache === "undefined") { cache = 1; }
+        if (cache === void 0) {
+            cache = 1;
+        }
         this.hash = null;
         this.engine = "slimer";
         this.url = null;
@@ -48,14 +48,12 @@ var RenderRequest = (function () {
     RenderRequest.prototype.commandLine = function () {
         return [this.engine, this.url, this.file, this.key, this.delay, this.lang, this.width, this.height, this.viewportWidth, this.viewportHeight, this.fileType, this.filter, this.unsharp, this.cropx, this.cropy, this.cropw, this.croph];
     };
-
     RenderRequest.prototype.shellArg = function () {
         return this.engine + " '" + encodeURI(this.url) + "' " + this.file + " '" + this.key + "' " + this.delay + " " + this.lang + " " + this.width + " " + this.height + " " + this.viewportWidth + " " + this.viewportHeight + " " + this.fileType + " " + this.filter + " " + this.unsharp + " " + this.cropx + " " + this.cropy + " " + this.cropw + " " + this.croph;
     };
     return RenderRequest;
 })();
 exports.RenderRequest = RenderRequest;
-
 var RenderCat = (function () {
     function RenderCat(req, res) {
         this.req = null;
@@ -66,15 +64,14 @@ var RenderCat = (function () {
     RenderCat.prototype.inBrowser = function (fn) {
         ph.create(fn);
     };
-
     RenderCat.prototype.renderUsing = function (url, delay, lang, width, height, viewPortWidth, viewPortHeight, fileType, device, callback) {
         this.render(new RenderRequest(url, delay, lang, width, height, viewPortWidth, viewPortHeight, fileType, device), callback);
     };
-
     RenderCat.prototype.render = function (renderReq, callback) {
-        try  {
+        try {
             var child = spawn('/bin/bash', ["-c", "/usr/local/bin/render " + renderReq.shellArg()]);
-        } catch (e) {
+        }
+        catch (e) {
             console.log(e);
         }
         var resp = "";
