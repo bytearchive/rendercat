@@ -70,7 +70,6 @@ var RenderCat = (function () {
     };
     RenderCat.prototype.render = function (renderReq, callback) {
         try {
-            console.log("Child process pre-spawn");
             var child = execFile("/usr/local/bin/render", renderReq.commandLine(), {
                 detached: true,
                 maxBuffer: 1024 * 500,
@@ -78,7 +77,6 @@ var RenderCat = (function () {
             }, function (error, buf1, buf2) {
                 console.log("Callback " + error);
             });
-            console.log("Child process post-spawn " + child);
         }
         catch (e) {
             console.log(e);

@@ -82,7 +82,6 @@ export class RenderCat {
 
     render(renderReq:RenderRequest, callback:(string)=>void) {
         try {
-            console.log("Child process pre-spawn");
             var child:childProcess.ChildProcess = execFile("/usr/local/bin/render", renderReq.commandLine(), {
                 detached: true,
                 maxBuffer: 1024 * 500,
@@ -90,7 +89,6 @@ export class RenderCat {
             }, function (error, buf1, buf2) {
                 console.log("Callback " + error)
             });
-            console.log("Child process post-spawn " + child)
         } catch (e) {
             console.log(e);
         }
