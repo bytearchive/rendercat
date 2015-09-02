@@ -77,9 +77,7 @@ ADD bin/cleanup.sh /usr/local/bin/cleanup.sh
 COPY etc/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 RUN chmod 755 /usr/local/bin/*
 
-ADD etc/nginx.conf /etc/nginx/
-# Append "daemon off;" to the beginning of the configuration
-RUN echo "daemon off;" >> /etc/nginx/nginx.conf
+COPY etc/nginx.conf /etc/nginx/nginx.conf
 
 RUN chmod 755 /app/run.sh
 
@@ -89,5 +87,5 @@ EXPOSE 80
 EXPOSE 3000
 CMD ["/usr/bin/supervisord"]
 
-ONBUILD ADD modules/ /app/modules/
-ONBUILD ADD public/ /app/public/
+ONBUILD COPY modules/ /app/modules/
+ONBUILD COPY public/ /app/public/
