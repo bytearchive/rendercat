@@ -96,11 +96,9 @@ export class RenderCat {
         }
         var resp:string = "";
         child.stdout.on('data', function (buffer) {
-            console.log("data");
             resp += buffer.toString()
         });
         child.stdout.on('end', function () {
-            console.log("end");
             console.log(resp);
             callback(resp);
         });

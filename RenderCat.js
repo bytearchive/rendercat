@@ -85,11 +85,9 @@ var RenderCat = (function () {
         }
         var resp = "";
         child.stdout.on('data', function (buffer) {
-            console.log("data");
             resp += buffer.toString();
         });
         child.stdout.on('end', function () {
-            console.log("end");
             console.log(resp);
             callback(resp);
         });
